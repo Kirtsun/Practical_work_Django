@@ -8,4 +8,4 @@ User = get_user_model()
 class PostsForm(forms.ModelForm):
     class Meta:
         model = Posts
-        fields = ('title', 'text',)
+        fields = ('title', 'text', 'is_publish')

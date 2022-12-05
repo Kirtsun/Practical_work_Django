@@ -11,6 +11,7 @@ class Posts(models.Model):
     text = models.TextField()
     create_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField()
+    is_publish = models.BooleanField(default=False)
 
     def publish(self):
         self.published_date = timezone.now()
