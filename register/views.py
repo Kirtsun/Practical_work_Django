@@ -12,11 +12,6 @@ class RegisterFormView(generic.FormView):
 
     def form_valid(self, form):
         user = form.save()
-        # form.cleaned_data.get("password1")
-
-        # username = self.request.POST['username']
-        # password = self.request.POST['password1']
-
-        user = authenticate(self, username=user.username, password=user._password)
+        user = authenticate(self.request, username=user.username, password=form.cleanrd_data.get("password1"))
         login(self.request, user)
         return super(RegisterFormView, self).form_valid(form)
