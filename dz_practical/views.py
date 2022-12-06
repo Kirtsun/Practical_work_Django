@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
@@ -41,7 +41,7 @@ class UserPostUpdate(LoginRequiredMixin, generic.UpdateView):
         return posts
 
 
-def create_comments(request):
+def create_comments(request, pk):
     if request.method == 'POST':
         form = CommentsForm(request.POST)
         if form.is_valid():
@@ -49,9 +49,19 @@ def create_comments(request):
             comm.published_date = timezone.now()
             comm.save()
             send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
-                            admin_email='admin@gmail.com')
-
+                            to_email='admin@gmail.com')
+            post = get_object_or_404(Posts, pk=pk)
+            user_email = post.owner.email
+            send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
+                            to_email=user_email)
             return redirect('index')
     else:
         form = CommentsForm()
     return render(request, 'templates/create_comments.html', {'form': form})
+
+
+class PostList(generic.ListView):
+    model = Posts
+    queryset = Posts.objects.select_related("author")
+    paginate_by = 5
+
