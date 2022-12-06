@@ -13,10 +13,16 @@ class Posts(models.Model):
     published_date = models.DateTimeField()
     is_publish = models.BooleanField(default=False)
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
-
     def __str__(self):
         return self.title
+
+
+class Comments(models.Model):
+    text = models.TextField()
+    published_date = models.DateTimeField()
+    is_publish = models.BooleanField(default=False)
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
 
