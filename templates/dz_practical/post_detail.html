@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+ {% if post %}
+<p><h3>{{post.title}}</p></h3>
+    <p>{{post.text}}</p>
+        {% if comm %}
+            {% for comm in comm %}
+                <p>{{comm.text}}</p>
+            {% endfor %}
+        {% else %}
+            <p> Has no comm</p>
+        {% endif %}
+
+ {% else %}
+    <p>Has not post</p>
+ {% endif %}
+{% endblock %}

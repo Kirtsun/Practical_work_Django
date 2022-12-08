@@ -7,7 +7,7 @@ from django.views import generic
 
 from django.contrib.auth import get_user_model
 from .forms import PostsForm, CommentsForm
-from .models import Posts
+from .models import Posts, Comments
 from .tasks import send_mail
 
 User = get_user_model()
@@ -48,17 +48,18 @@ def create_comments(request, pk):
         if form.is_valid():
             comm = form.save(commit=False)
             comm.published_date = timezone.now()
+            comm.post_id = pk
             comm.save()
             send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
                             to_email='admin@gmail.com')
             post = get_object_or_404(Posts, pk=pk)
-            user_email = post.owner.email
+            user_email = post.author.email
             send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
                             to_email=user_email)
-            return redirect('index')
+            return redirect('post_detail', pk=pk)
     else:
         form = CommentsForm()
-    return render(request, 'templates/create_comments.html', {'form': form})
+    return render(request, 'dz_practical/create_comments.html', {'form': form, 'pk': pk})
 
 
 class PostList(generic.ListView):
@@ -74,4 +75,15 @@ class PostList(generic.ListView):
 
 
 def author_post(request, pk):
+    post = Posts.objects.filter(author_id=pk, is_publish=True)
+    return render(request, 'dz_practical/author_post.html', {'post': post})
+
+
+def detail_post(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+    comm = post.comments_set.filter(is_publish=True)
+    return render(request, 'dz_practical/post_detail.html', {'post': post, 'comm': comm})
+
+
+
 

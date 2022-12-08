@@ -1,3 +1,23 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Posts, Comments
+
+
+@admin.register(Posts)
+class PostsAdmin(admin.ModelAdmin):
+    list_display = ("title", )
+    fieldsets = [
+        (None, {'fields': ['text']})]
+    list_filter = ['title']
+    search_fields = ['title']
+    save_as = True
+
+
+@admin.register(Comments)
+class CommentsAdmin(admin.ModelAdmin):
+    list_display = ("text", 'published_date', 'is_publish', 'post')
+    fieldsets = [
+        (None, {'fields': ['text', 'is_publish', 'post', 'published_date']})]
+    list_filter = ['text']
+    search_fields = ['text']
+    save_as = True

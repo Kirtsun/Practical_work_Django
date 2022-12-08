@@ -5,10 +5,10 @@
     <title>Create comments</title>
 </head>
 <body>
-<form method="POST">
+<form action="{% url 'create_comments' pk %}" method="POST">
   {% csrf_token %}
   {{form.as_p}}
-    <input type="button" value="Comment">
+    <input type="submit" value="Comment">
 </form>
 </body>
 </html>
