@@ -15,16 +15,17 @@ User = get_user_model()
 
 @login_required
 def post_new(request):
-    if request.method == 'Post':
+    if request.method == 'POST':
         form = PostsForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            post.create_date = timezone.now()
             post.published_date = timezone.now()
             post.save()
             send_mail.delay(subject='You have a new Post', text=form.cleaned_data['text'],
-                            admin_email='admin@gmail.com')
-            return redirect('index')
+                            to_email='admin@gmail.com')
+            return redirect('post')
     else:
         form = PostsForm()
     return render(request, 'dz_practical/new_post.html', {'form': form})
@@ -64,4 +65,13 @@ class PostList(generic.ListView):
     model = Posts
     queryset = Posts.objects.select_related("author")
     paginate_by = 5
+    template_name = 'dz_practical/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        posts = Posts.objects.filter(is_publish=True)
+        return posts
+
+
+def author_post(request, pk):
 

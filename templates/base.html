@@ -5,8 +5,19 @@
     <title>Title</title>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <ul class="nav">
+                <li><a href="{% url 'new_post' %}">create post</a></li>
+                <li><a href="{% url 'register:registration' %}">registration</a></li>
 
-{% block content %}{% endblock %}
+                <li><a href="{% url 'create_comments' %}">create comments</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+            {% block content %}{% endblock %}
 {% block pagination %}
         {% if is_paginated %}
           <div class="pagination">
