@@ -41,6 +41,9 @@ class UserPostUpdate(LoginRequiredMixin, generic.UpdateView):
         posts = Posts.objects.filter(author=self.request.user)
         return posts
 
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.id})
+
 
 def create_comments(request, pk):
     if request.method == 'POST':
@@ -64,7 +67,6 @@ def create_comments(request, pk):
 
 class PostList(generic.ListView):
     model = Posts
-    queryset = Posts.objects.select_related("author")
     paginate_by = 5
     template_name = 'dz_practical/post_list.html'
     context_object_name = 'posts'

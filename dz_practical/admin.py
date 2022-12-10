@@ -7,7 +7,7 @@ from .models import Posts, Comments
 class PostsAdmin(admin.ModelAdmin):
     list_display = ("title", )
     fieldsets = [
-        (None, {'fields': ['text']})]
+        (None, {'fields': ['text', 'author', 'title', 'create_date', 'published_date', 'is_publish']})]
     list_filter = ['title']
     search_fields = ['title']
     save_as = True
