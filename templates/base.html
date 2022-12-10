@@ -21,7 +21,7 @@
                 <li><a href="{% url 'userprofile:my_profile' %}">My profile</a></li>
                 <li><a href="{% url 'register:logout' %}">logout</a></li>
                 {%else%}
-                <li><a href="{% url 'register:login' %}?next={{ request.path }}">Login</a></li>
+                <li><a href="{% url 'register:login' %}">Login</a></li>
                 <li><a href="{% url 'register:registration' %}?next={{ request.path }}">Registration</a></li>
 
                 {% endif %}

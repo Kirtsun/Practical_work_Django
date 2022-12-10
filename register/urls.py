@@ -5,7 +5,7 @@ from .views import RegisterFormView
 app_name = 'register'
 
 urlpatterns = [
-    path("login/", views.LoginView.as_view(), name="login"),
+    path("login/", views.LoginView.as_view(next_page='/dz_practical/'), name="login"),
     path("logout/", views.LogoutView.as_view(), name="logout"),
 
     path("password_change/", views.PasswordChangeView.as_view(), name="password_change"),
