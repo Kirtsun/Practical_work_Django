@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'register',
     'django_extensions',
     'debug_toolbar',
+    'userprofile'
 ]
 
 MIDDLEWARE = [

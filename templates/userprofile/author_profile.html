@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+ {% if author %}
+<p><h3>{{author.username}}</p></h3>
+    <p>{{author.email}}</p>
+    <p>{{post.author}}</p>
+        {% if post %}
+            {% for post in post %}
+                <p>{{post.title}}</p>
+                <P>text</P>
+                <p>{{post.text}}</p>
+            {% endfor %}
+        {% else %}
+            <p> Has no comm</p>
+        {% endif %}
+
+ {% else %}
+    <p>Has not post</p>
+ {% endif %}
+{% endblock %}

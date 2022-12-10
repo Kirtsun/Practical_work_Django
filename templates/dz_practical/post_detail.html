@@ -4,6 +4,7 @@
  {% if post %}
 <p><h3>{{post.title}}</p></h3>
     <p>{{post.text}}</p>
+    <p>{{post.author}}</p>
         {% if comm %}
             {% for comm in comm %}
                 <p>{{comm.text}}</p>

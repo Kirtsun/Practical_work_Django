@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+ {% if author %}
+<h1>Lj,fdbnm ccskrb </h1>
+<p><h3>{{author.username}}</p></h3>
+    <p>{{author.email}}</p>
+    <p>{{post.author}}</p>
+        {% if post %}
+            {% for post in post %}
+                <p>{{post.title}}</p>
+                <P>text</P>
+                <p>{{post.text}}</p>
+            {% endfor %}
+        {% else %}
+            <p> Has no post</p>
+        {% endif %}
+
+ {% else %}
+    <p>Has not post</p>
+ {% endif %}
+{% endblock %}

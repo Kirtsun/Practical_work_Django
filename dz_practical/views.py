@@ -38,7 +38,7 @@ class UserPostUpdate(LoginRequiredMixin, generic.UpdateView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        posts = Posts.objects.filter(owner=self.request.user)
+        posts = Posts.objects.filter(author=self.request.user)
         return posts
 
 
@@ -83,7 +83,4 @@ def detail_post(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     comm = post.comments_set.filter(is_publish=True)
     return render(request, 'dz_practical/post_detail.html', {'post': post, 'comm': comm})
-
-
-
 
