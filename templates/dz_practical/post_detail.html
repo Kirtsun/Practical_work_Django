@@ -16,4 +16,7 @@
  {% else %}
     <p>Has not post</p>
  {% endif %}
+{% if {{post.author}} is {{request.user}} %}
+<li><a href="{% url 'update' post.id%}">update update</a></li>
+{% endif %}
 {% endblock %}

@@ -13,7 +13,7 @@ from .tasks import send_mail
 User = get_user_model()
 
 
-@login_required
+@login_required(login_url='/register/login/')
 def post_new(request):
     if request.method == 'POST':
         form = PostsForm(request.POST)
