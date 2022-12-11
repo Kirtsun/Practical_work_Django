@@ -57,10 +57,6 @@ def create_comments(request, pk):
             comm.save()
             send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
                             to_email='admin@gmail.com')
-            post = get_object_or_404(Posts, pk=pk)
-            user_email = post.author.email
-            send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
-                            to_email=user_email)
             return redirect('post_detail', pk=pk)
     else:
         form = CommentsForm()
