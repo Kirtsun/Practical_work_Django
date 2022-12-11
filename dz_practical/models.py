@@ -18,6 +18,7 @@ class Posts(models.Model):
 
 
 class Comments(models.Model):
+    name = models.CharField(max_length=50, null=True)
     text = models.TextField()
     published_date = models.DateTimeField()
     is_publish = models.BooleanField(default=False)

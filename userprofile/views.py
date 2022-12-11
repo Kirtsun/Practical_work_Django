@@ -30,9 +30,10 @@ class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
     fields = ["username", "email"]
     template_name = 'userprofile/update_profile.html'
     success_url = reverse_lazy("post")
+    success_message = "Profile updated"
 
     def get_object(self, queryset=None):
         user = self.request.user
-        return
+        return user
 
 

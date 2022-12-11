@@ -1,16 +1,14 @@
 {% extends "base.html" %}
-
+{% block title %}My profile{% endblock %}
 {% block content %}
  {% if author %}
-<h1>Lj,fdbnm ccskrb </h1>
 <p><h3>{{author.username}}</p></h3>
     <p>{{author.email}}</p>
-    <p>{{post.author}}</p>
         {% if post %}
             {% for post in post %}
-                <p>{{post.title}}</p>
-                <P>text</P>
+                <p><a href="{% url 'post_detail' post.id%}">{{post.title}}</a>
                 <p>{{post.text}}</p>
+                <p>{{post.comments_set.all}}</p>
             {% endfor %}
         {% else %}
             <p> Has no post</p>
