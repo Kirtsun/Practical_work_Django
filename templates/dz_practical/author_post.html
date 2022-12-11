@@ -1,11 +1,16 @@
-
 {% extends "base.html" %}
-
+{% block title %}Profile{% endblock %}
 {% block content %}
  {% if post %}
+    <p><h4>Author:<a href="{% url 'userprofile:public_profile' author.id %}">{{author.username}}</a></h4></p>
      {% for i in post %}
-        <p>{{i.title}}</p>
+        <ul>
+        <p><a href="{% url 'post_detail' i.id %}">{{i.title}}</a></p>
         <p>{{i.text}}</p>
+            <p> Publish date: {{i.published_date}} </p>
+            <p>Has {{i.cont}} comments</p>
+        </ul>
+        <hr>
      {% endfor %}
  {% else %}
     <p>Has not post</p>

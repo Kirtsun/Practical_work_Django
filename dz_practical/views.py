@@ -80,15 +80,30 @@ class PostList(generic.ListView):
 
 
 def author_post(request, pk):
-    post = Posts.objects.filter(author_id=pk, is_publish=True)
-    return render(request, 'dz_practical/author_post.html', {'post': post})
+    author = get_object_or_404(User, pk=pk)
+    post = author.posts_set.filter(is_publish=True).annotate(cont=Count('comments',
+                                                                        filter=Q(comments__is_publish=True)))
+    return render(request, 'dz_practical/author_post.html', {'post': post, 'author': author})
 
 
 def detail_post(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     comm = post.comments_set.filter(is_publish=True)
-    # paginator = Paginator(comm, 5)
-    # page_number = request.GET.get('page')
-    # comm = paginator.get_page(page_number)
+    paginator = Paginator(comm, 5)
+    page_number = request.GET.get('page')
+    comm = paginator.get_page(page_number)
     return render(request, 'dz_practical/post_detail.html', {'post': post, 'comm': comm})
+
+
+class MyBlanks(LoginRequiredMixin, generic.ListView):
+    model = Posts
+    template_name = 'dz_practical/my_blanks.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        posts = Posts.objects.filter(author=self.request.user, is_publish=False)
+        return posts
+
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.id})
 

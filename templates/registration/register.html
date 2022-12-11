@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block content %}
 
-  <form method="POST" >
-    {% csrf_token %}
-      <p>Username: {{ form.username }}<p>
-      <p>Email: {{ form.email }}</p>
-      <p>Password: {{form.password1 }}</p>
-      <p>Password confirm: {{form.password2 }}</p>
-    <input type="submit" value="Register">
-  </form>
+ {% block content %}
+    <h1>Create an account</h1>
+    <p>Please, sign up using the following form:</p>
+    <form action="{% url 'accounts:registration' %}" method="post">
+
+        {{ user_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Create my account"></p>
+    </form>
 {% endblock %}

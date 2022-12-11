@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, Q
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -19,8 +20,7 @@ def public_profile(request, pk):
 
 @login_required
 def my_profile(request):
-    a = request.user.id
-    author = get_object_or_404(User, pk=a)
+    author = get_object_or_404(User, pk=request.user.id)
     post = author.posts_set.filter(is_publish=True)
     return render(request, 'userprofile/my_profile.html', {'author': author, 'post': post})
 
@@ -29,7 +29,7 @@ class UpdateProfile(LoginRequiredMixin, generic.UpdateView):
     model = User
     fields = ["username", "email"]
     template_name = 'userprofile/update_profile.html'
-    success_url = reverse_lazy("post")
+    success_url = reverse_lazy("userprofile:my_profile")
     success_message = "Profile updated"
 
     def get_object(self, queryset=None):

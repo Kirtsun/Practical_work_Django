@@ -2,14 +2,21 @@
 {% block title %}Post detail{% endblock %}
 {% block content %}
  {% if post %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2">
+    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="150" height="150">
+   </div>
+  </div>
+</div>
 <p><h3>{{post.title}}</p></h3>
     <p>{{post.text}}</p>
     <p>Author:&nbsp;<a href="{% url 'author_post' post.author.id%}">{{ post.author }}</a></p>
     <p>Publish date: {{post.published_date}}</p>
-        {% if comm %}
         <hr>
         <a href="{% url 'create_comments' post.id %}">Create comment</a>
         <p><h4>Comments</h4></p>
+            {% if comm %}
             {% for comm in comm %}
                 <li>{{comm.name}}</li>
                 <ul><p>{{comm.text}}</p></ul>
@@ -21,6 +28,19 @@
  {% else %}
     <p>Has not post</p>
  {% endif %}
-
-
 {% endblock %}
+{% block pagination %}
+          <div class="pagination">
+            <span class="page-links">
+                {% if comm.has_previous %}
+                  <a href="{{ request.path }}?page={{ comm.previous_page_number }}">Previous</a>
+                {% endif %}
+              <span class="page-current">
+                    Page {{ comm.number }} of {{ comm.paginator.num_pages }}.
+                </span>
+              {% if comm.has_next %}
+                <a href="{{ request.path }}?page={{ comm.next_page_number }}">Next</a>
+              {% endif %}
+            </span>
+          </div>
+      {% endblock %}

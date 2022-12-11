@@ -1,17 +1,22 @@
 from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import RegisterForm
+from .forms import UserRegistrationForm
 
 
-class RegisterFormView(generic.FormView):
-    template_name = 'registration/register.html'
-    form_class = RegisterForm
-    success_url = reverse_lazy("post")
+def registers(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
+            new_user = authenticate(request, username=new_user.username, password=user_form.cleaned_data.get("password"))
+            login(request, new_user)
+            return redirect('post')
+    else:
+        user_form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'user_form': user_form})
 
-    def form_valid(self, form):
-        user = form.save()
-        user = authenticate(self.request, username=user.username, password=form.cleaned_data.get("password1"))
-        login(self.request, user)
-        return super(RegisterFormView, self).form_valid(form)

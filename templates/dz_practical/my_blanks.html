@@ -8,8 +8,10 @@
         <p>Author:&nbsp;<a href="{% url 'userprofile:public_profile' i.author.id%}">{{ i.author }}</a> </p>
         <p><a href="{% url 'author_post' i.author.id%}">Show all post</a></p>
         <p>Publish date: {{i.published_date}}</p>
+        {% if i.cont %}
         <p>Have {{i.cont}} comments</p>
-        <p><a href="{% url 'create_comments' i.id%}">Create comments</a> </p>
+        {% endif %}
+        <p><a href="{% url 'update' i.id%}">Update</a> </p>
         <hr>
      {% endfor %}
  {% else %}

@@ -14,15 +14,17 @@
         <div class="sidebar-nav">
             <p>Navigation</p>
           <li><a href="{% url 'post' %}">ALL post</a></li>
-
+            <hr>
             <div class="sidebar-nav">
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'new_post' %}">Create Post</a></li>
                 <li><a href="{% url 'userprofile:my_profile' %}">My profile</a></li>
-                <li><a href="{% url 'register:logout' %}">logout</a></li>
+                <li><a href="{% url 'accounts:logout' %}">logout</a></li>
+                <li><a href="{% url 'my_blanks' %}">Show my blanks</a></li>
+
                 {%else%}
-                <li><a href="{% url 'register:login' %}">Login</a></li>
-                <li><a href="{% url 'register:registration' %}?next={{ request.path }}">Registration</a></li>
+                <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                <li><a href="{% url 'accounts:registration' %}?next={{ request.path }}">Registration</a></li>
 
                 {% endif %}
             </div>

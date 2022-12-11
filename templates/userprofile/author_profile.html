@@ -2,20 +2,13 @@
 
 {% block content %}
  {% if author %}
-<p><h3>{{author.username}}</p></h3>
-    <p>{{author.email}}</p>
-    <p>{{post.author}}</p>
+<p><h3>Username: {{author.username}}</p></h3>
+    <p>Email: {{author.email}}</p>
+        <hr>
         {% if post %}
-            {% for post in post %}
-                <p>{{post.title}}</p>
-                <P>text</P>
-                <p>{{post.text}}</p>
-            {% endfor %}
+        <p><a href="{% url 'author_post' author.id%}">Show all post</a></p>
         {% else %}
-            <p> Has no comm</p>
+            <p>No posts</p>
         {% endif %}
-
- {% else %}
-    <p>Has not post</p>
  {% endif %}
 {% endblock %}
