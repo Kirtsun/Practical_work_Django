@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.db.models import Count, Q
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -72,7 +74,8 @@ class PostList(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        posts = Posts.objects.filter(is_publish=True)
+        cont = Count('comments', filter=Q(comments__is_publish=True))
+        posts = Posts.objects.filter(is_publish=True).annotate(cont=cont)
         return posts
 
 
@@ -84,5 +87,8 @@ def author_post(request, pk):
 def detail_post(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     comm = post.comments_set.filter(is_publish=True)
+    # paginator = Paginator(comm, 5)
+    # page_number = request.GET.get('page')
+    # comm = paginator.get_page(page_number)
     return render(request, 'dz_practical/post_detail.html', {'post': post, 'comm': comm})
 

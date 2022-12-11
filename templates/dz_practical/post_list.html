@@ -4,8 +4,12 @@
  {% if posts %}
 <h1>ALL POST</h1>
      {% for i in posts %}
-        <p><a href="{% url 'post_detail' i.id%}">{{i.title}}</a></p>
-        <p>{{i.text}}</p>
+        <h3><p><a href="{% url 'post_detail' i.id%}">{{i.title}}</a></p></h3>
+        <p>Author:&nbsp;<a href="{% url 'author_post' i.author.id%}">{{ i.author }}</a></p>
+        <p>Publish date: {{i.published_date}}</p>
+        <p>Have {{i.cont}} comments</p>
+        <p><a href="{% url 'create_comments' i.id%}">Create comments</a> </p>
+        <hr>
      {% endfor %}
  {% else %}
     <p>Has not post</p>
