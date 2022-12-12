@@ -114,14 +114,18 @@ class MyBlanks(LoginRequiredMixin, generic.ListView):
 
 @login_required()
 def contact_form(request):
+    data = dict()
     if request.method == "POST":
         form = Mail(request.POST)
         if form.is_valid():
+            data['form_is_valid'] = True
             to_mail = form.cleaned_data['mail']
             text = form.cleaned_data['text']
             subject = 'Author need your help'
             send_mail.delay(subject, text, to_mail)
             return redirect('post')
+        else:
+            data['form_is_valid'] = False
     else:
         form = Mail()
     return render(request, 'dz_practical/contact_form.html', {'form': form})
