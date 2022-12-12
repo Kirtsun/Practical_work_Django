@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -21,8 +22,11 @@ def public_profile(request, pk):
 @login_required
 def my_profile(request):
     author = get_object_or_404(User, pk=request.user.id)
-    post = author.posts_set.filter(is_publish=True)
-    return render(request, 'userprofile/my_profile.html', {'author': author, 'post': post})
+    page_obj = author.posts_set.filter(is_publish=True)
+    paginator = Paginator(page_obj, 5)
+    page_obj = request.GET.get('page')
+    page_obj = paginator.get_page(page_obj)
+    return render(request, 'userprofile/my_profile.html', {'author': author, 'page_obj': page_obj})
 
 
 class UpdateProfile(LoginRequiredMixin, generic.UpdateView):

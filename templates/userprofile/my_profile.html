@@ -9,8 +9,8 @@
     <p><a href="{% url 'userprofile:update_profile'%}">Update my profile</a></p>
     </ul>
         <hr>
-        {% if post %}
-            {% for post in post %}
+        {% if page_obj %}
+            {% for post in page_obj %}
                 <p><h5>Post Title:</h5><h3><a href="{% url 'post_detail' post.id%}">{{post.title}}</a></h3></p>
                 <p><h5>Post text:</h5> {{post.text}}</p>
                 <p>Date published: {{post.published_date}}</p>

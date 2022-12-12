@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.PostList.as_view(), name='post'),
     path('author_post/<int:pk>/', views.author_post, name='author_post'),
     path('post_detail/<int:pk>/', views.detail_post, name='post_detail'),
-    path('my_blanks/', views.MyBlanks.as_view(), name='my_blanks')
+    path('my_blanks/', views.MyBlanks.as_view(), name='my_blanks'),
+    path('contact_form/', views.contact_form, name='contact_form')
 
 ]

@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views import generic
 
 from django.contrib.auth import get_user_model
-from .forms import PostsForm, CommentsForm
+from .forms import PostsForm, CommentsForm, Mail
 from .models import Posts, Comments
 from .tasks import send_mail
 
@@ -77,9 +77,12 @@ class PostList(generic.ListView):
 
 def author_post(request, pk):
     author = get_object_or_404(User, pk=pk)
-    post = author.posts_set.filter(is_publish=True).annotate(cont=Count('comments',
+    page_obj = author.posts_set.filter(is_publish=True).annotate(cont=Count('comments',
                                                                         filter=Q(comments__is_publish=True)))
-    return render(request, 'dz_practical/author_post.html', {'post': post, 'author': author})
+    paginator = Paginator(page_obj, 5)
+    page_obj = request.GET.get('page')
+    page_obj = paginator.get_page(page_obj)
+    return render(request, 'dz_practical/author_post.html', {'page_obj': page_obj, 'author': author})
 
 
 def detail_post(request, pk):
@@ -95,6 +98,7 @@ class MyBlanks(LoginRequiredMixin, generic.ListView):
     model = Posts
     template_name = 'dz_practical/my_blanks.html'
     context_object_name = 'posts'
+    paginate_by = 5
 
     def get_queryset(self):
         posts = Posts.objects.filter(author=self.request.user, is_publish=False)
@@ -102,4 +106,19 @@ class MyBlanks(LoginRequiredMixin, generic.ListView):
 
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.id})
+
+
+@login_required()
+def contact_form(request):
+    if request.method == "POST":
+        form = Mail(request.POST)
+        if form.is_valid():
+            to_mail = form.cleaned_data['mail']
+            text = form.cleaned_data['text']
+            subject = 'Author need your help'
+            send_mail.delay(subject, text, to_mail)
+            return redirect('post')
+    else:
+        form = Mail()
+    return render(request, 'dz_practical/contact_form.html', {'form': form})
 

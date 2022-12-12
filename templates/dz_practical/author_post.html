@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Profile{% endblock %}
 {% block content %}
- {% if post %}
+ {% if page_obj %}
     <p><h4>Author:<a href="{% url 'userprofile:public_profile' author.id %}">{{author.username}}</a></h4></p>
-     {% for i in post %}
+     {% for i in page_obj %}
         <ul>
         <p><a href="{% url 'post_detail' i.id %}">{{i.title}}</a></p>
         <p>{{i.text}}</p>

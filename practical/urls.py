@@ -23,12 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dz_practical/', include('dz_practical.urls')),
     path('accounts/', include('register.urls')),
-    path('userprofile/', include('userprofile.urls'))
+    path('userprofile/', include('userprofile.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
 
 ]
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
