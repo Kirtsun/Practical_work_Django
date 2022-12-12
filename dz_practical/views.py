@@ -5,9 +5,12 @@ from django.db.models import Count, Q
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views import generic
 
 from django.contrib.auth import get_user_model
+from django.views.decorators.cache import cache_page
+
 from .forms import PostsForm, CommentsForm, Mail
 from .models import Posts, Comments
 from .tasks import send_mail
@@ -63,6 +66,7 @@ def create_comments(request, pk):
     return render(request, 'dz_practical/create_comments.html', {'form': form, 'pk': pk})
 
 
+@method_decorator(cache_page(10), name='dispatch')
 class PostList(generic.ListView):
     model = Posts
     paginate_by = 5
