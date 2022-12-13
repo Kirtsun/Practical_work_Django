@@ -28,6 +28,7 @@ $(function () {
       success: function (data) {
         if (data.form_is_valid) {
           $("#modal-book").modal("hide");
+          $("#modal-contact").modal("show");
         }
         else {
           $("#modal-book .modal-content").html(data.html_form);

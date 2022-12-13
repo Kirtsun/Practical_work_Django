@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
 
 from .forms import PostsForm, CommentsForm, Mail
-from .models import Posts, Comments
+from .models import Posts
 from .tasks import send_mail
 
 User = get_user_model()
@@ -126,6 +126,7 @@ def contact_form(request):
             text = form.cleaned_data['text']
             subject = 'Someone need your help'
             send_mail.delay(subject, text, to_mail)
+
         else:
             data['form_is_valid'] = False
     else:
