@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+ {% if author %}
+<p><h3>Username: {{author.username}}</p></h3>
+    <p>Email: {{author.email}}</p>
+        <hr>
+        {% if post %}
+        <p><a href="{% url 'author_post' author.id%}">Show all post</a></p>
+        {% else %}
+            <p>No posts</p>
+        {% endif %}
+ {% endif %}
+{% endblock %}

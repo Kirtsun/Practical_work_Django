@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}ALL POST{% endblock %}
+{% block content %}
+ {% if posts %}
+<h1>ALL POST</h1>
+     {% for i in posts %}
+        <h3><p><a href="{% url 'post_detail' i.id%}">{{i.title}}</a></p></h3>
+        <p>Author:&nbsp;<a href="{% url 'userprofile:public_profile' i.author.id%}">{{ i.author }}</a> </p>
+        <p><a href="{% url 'author_post' i.author.id%}">Show all post</a></p>
+        <p>Publish date: {{i.published_date}}</p>
+        <p>Create date: {{i.create_date}}</p>
+        {% if i.cont %}
+        <p>Have {{i.cont}} comments</p>
+        {% endif %}
+        <p><a href="{% url 'update' i.id%}">Update</a> </p>
+        <hr>
+     {% endfor %}
+ {% else %}
+    <p>Has not post</p>
+ {% endif %}
+
+{% endblock %}

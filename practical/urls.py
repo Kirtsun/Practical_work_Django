@@ -16,8 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/dz_practical/', include('dz_practical.urls')),
+    path('dz_practical/', include('dz_practical.urls')),
+    path('accounts/', include('register.urls')),
+    path('userprofile/', include('userprofile.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
 
 ]
+

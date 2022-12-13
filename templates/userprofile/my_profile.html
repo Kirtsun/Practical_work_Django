@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}My profile{% endblock %}
+{% block content %}
+ {% if author %}
+<p><h3>Username: {{author.username}}</p></h3>
+    <p>Email: {{author.email}}</p>
+    <ul>
+    <p><a href="{% url 'accounts:password_change' %}">Password change</a></p>
+    <p><a href="{% url 'userprofile:update_profile'%}">Update my profile</a></p>
+    </ul>
+        <hr>
+        {% if page_obj %}
+            {% for post in page_obj %}
+                <p><h5>Post Title:</h5><h3><a href="{% url 'post_detail' post.id%}">{{post.title}}</a></h3></p>
+                <p><h5>Post text:</h5> {{post.text}}</p>
+                <p>Date published: {{post.published_date}}</p>
+                <p><a href="{% url 'update' post.id%}">Update post</a> </p>
+                <hr>
+
+            {% endfor %}
+        {% else %}
+            <p> Has no post</p>
+        {% endif %}
+
+ {% else %}
+    <p>Has not post</p>
+ {% endif %}
+{% endblock %}
