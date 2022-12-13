@@ -2,12 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import generic
-
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
 
@@ -30,7 +32,8 @@ def post_new(request):
             post.save()
             send_mail.delay(subject='You have a new Post', text=form.cleaned_data['text'],
                             to_email='admin@gmail.com')
-            return redirect('post')
+            messages.add_message(request, messages.SUCCESS, 'Post create')
+            return redirect('post_detail', pk=post.id)
     else:
         form = PostsForm()
     return render(request, 'dz_practical/new_post.html', {'form': form})
@@ -60,6 +63,7 @@ def create_comments(request, pk):
             comm.save()
             send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
                             to_email='admin@gmail.com')
+            messages.add_message(request, messages.SUCCESS, 'Comment create')
             return redirect('post_detail', pk=pk)
     else:
         form = CommentsForm()
@@ -82,7 +86,7 @@ class PostList(generic.ListView):
 def author_post(request, pk):
     author = get_object_or_404(User, pk=pk)
     page_obj = author.posts_set.filter(is_publish=True).annotate(cont=Count('comments',
-                                                                        filter=Q(comments__is_publish=True)))
+                                                                            filter=Q(comments__is_publish=True)))
     paginator = Paginator(page_obj, 5)
     page_obj = request.GET.get('page')
     page_obj = paginator.get_page(page_obj)
@@ -112,7 +116,6 @@ class MyBlanks(LoginRequiredMixin, generic.ListView):
         return reverse('post_detail', kwargs={'pk': self.object.id})
 
 
-@login_required()
 def contact_form(request):
     data = dict()
     if request.method == "POST":
@@ -121,12 +124,13 @@ def contact_form(request):
             data['form_is_valid'] = True
             to_mail = form.cleaned_data['mail']
             text = form.cleaned_data['text']
-            subject = 'Author need your help'
+            subject = 'Someone need your help'
             send_mail.delay(subject, text, to_mail)
-            return redirect('post')
         else:
             data['form_is_valid'] = False
     else:
         form = Mail()
-    return render(request, 'dz_practical/contact_form.html', {'form': form})
+    context = {'form': form}
+    data['html_form'] = render_to_string('dz_practical/contact_form.html', context, request=request)
+    return JsonResponse(data)
 
