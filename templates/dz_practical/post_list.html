@@ -4,7 +4,7 @@
  {% if posts %}
 <h1>ALL POST</h1>
      {% for i in posts %}
-        <h3><p><a href="{% url 'post_detail' i.id%}">{{i.title}}</a></p></h3>
+        <h3><p>Post title: <a href="{% url 'post_detail' i.id%}">{{i.title}}</a></p></h3>
         <p>Author:&nbsp;<a href="{% url 'userprofile:public_profile' i.author.id%}">{{ i.author }}</a> </p>
         <p><a href="{% url 'author_post' i.author.id%}">Show all post</a></p>
         <p>Publish date: {{i.published_date}}</p>

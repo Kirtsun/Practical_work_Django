@@ -79,7 +79,7 @@ class PostList(generic.ListView):
 
     def get_queryset(self):
         cont = Count('comments', filter=Q(comments__is_publish=True))
-        posts = Posts.objects.filter(is_publish=True).annotate(cont=cont)
+        posts = Posts.objects.select_related('author').filter(is_publish=True).annotate(cont=cont)
         return posts
 
 
@@ -93,6 +93,7 @@ def author_post(request, pk):
     return render(request, 'dz_practical/author_post.html', {'page_obj': page_obj, 'author': author})
 
 
+@cache_page(10)
 def detail_post(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     comm = post.comments_set.filter(is_publish=True)
