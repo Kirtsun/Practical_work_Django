@@ -1,10 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Posts, Comments
-from datetime import timedelta
 
-from django.core.exceptions import ValidationError
-from django.utils import timezone
+from .models import Comments, Posts
 
 User = get_user_model()
 
@@ -24,4 +21,3 @@ class CommentsForm(forms.ModelForm):
 class Mail(forms.Form):
     mail = forms.EmailField(label='You email')
     text = forms.CharField(widget=forms.Textarea(attrs={"rows": "10"}))
-

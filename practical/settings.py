@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+
 import environ
 
 
@@ -62,7 +63,7 @@ INSTALLED_APPS = [
 if DEBUG:
     INSTALLED_APPS += [
         "debug_toolbar",
-]
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
