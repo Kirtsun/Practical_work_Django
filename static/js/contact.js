@@ -9,11 +9,11 @@ $(function () {
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
-        $("#modal-book .modal-content").html("");
-        $("#modal-book").modal("show");
+        $("#modal-contact .modal-content").html("");
+        $("#modal-contact").modal("show");
       },
       success: function (data) {
-        $("#modal-book .modal-content").html(data.html_form);
+        $("#modal-contact .modal-content").html(data.html_form);
       }
     });
   };
@@ -27,11 +27,11 @@ $(function () {
       dataType: 'json',
       success: function (data) {
         if (data.form_is_valid) {
-          $("#modal-book").modal("hide");
-          $("#modal-contact").modal("show");
+          $("#modal-contact").modal("hide");
+          $("#modal-message").modal("show");
         }
         else {
-          $("#modal-book .modal-content").html(data.html_form);
+          $("#modal-contact .modal-content").html(data.html_form);
         }
       }
     });
@@ -43,6 +43,6 @@ $(function () {
 
   // Create book
   $(".js-create-book").click(loadForm);
-  $("#modal-book").on("submit", ".js-contact-us-form", saveForm);
+  $("#modal-contact").on("submit", ".js-contact-us-form", saveForm);
 
  });
