@@ -21,7 +21,7 @@ class Posts(models.Model):
 
 
 class Comments(LifecycleModel):
-    name = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=50)
     text = models.TextField()
     published_date = models.DateTimeField()
     is_publish = models.BooleanField(default=False)
