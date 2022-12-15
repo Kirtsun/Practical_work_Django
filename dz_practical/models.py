@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django_lifecycle import LifecycleModel, hook, AFTER_UPDATE
 from django.core.mail import send_mail
@@ -33,4 +32,3 @@ class Comments(LifecycleModel):
 
     def __str__(self):
         return self.text
-
