@@ -29,7 +29,7 @@ class Comments(LifecycleModel):
     @hook(AFTER_UPDATE, when="is_publish", was=False, is_now=True)
     def on_publish(self):
         send_mail('You have a new Comment', ' http://127.0.0.1:8000' + reverse('post_detail', args=[str(self.post.id)]),
-                  'compane@gmai;.com', [self.post.author.email])
+                  'compane@gmail.com', [self.post.author.email])
 
     def __str__(self):
         return self.text
