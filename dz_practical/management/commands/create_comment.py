@@ -1,10 +1,14 @@
 import random
 from datetime import datetime
-import pytz
+
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from dz_practical.models import Posts, Comments
+
+from dz_practical.models import Comments, Posts
+
 from faker import Faker
+
+import pytz
 
 
 User = get_user_model()
