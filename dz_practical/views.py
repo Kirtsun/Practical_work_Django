@@ -61,7 +61,7 @@ def create_comments(request, pk):
             comm.published_date = timezone.now()
             comm.post_id = pk
             comm.save()
-            send_mail('You have a new Post', form.cleaned_data['text'], 'company@gmail.com',
+            send_mail('You have a new Comments', form.cleaned_data['text'], 'company@gmail.com',
                       ['admin@gmail.com'], fail_silently=False)
             messages.add_message(request, messages.SUCCESS, 'Comment create')
             return redirect('post_detail', pk=pk)

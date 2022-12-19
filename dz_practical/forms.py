@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-
-from .models import Comments, Posts
+from .models import Posts, Comments
 
 User = get_user_model()
 
