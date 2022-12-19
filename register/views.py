@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views import generic
 
 from .forms import UserRegistrationForm
 
@@ -11,10 +13,10 @@ def registers(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
-            new_user = authenticate(request, username=new_user.username,
-                                    password=user_form.cleaned_data.get("password"))
+            new_user = authenticate(request, username=new_user.username, password=user_form.cleaned_data.get("password"))
             login(request, new_user)
             return redirect('post')
     else:
         user_form = UserRegistrationForm()
     return render(request, 'registration/register.html', {'user_form': user_form})
+

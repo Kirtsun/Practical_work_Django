@@ -1,10 +1,9 @@
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
 from django.db import models
 from django.urls import reverse
-
-from django_lifecycle import AFTER_UPDATE, LifecycleModel, hook
-
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django_lifecycle import LifecycleModel, hook, AFTER_UPDATE
+from django.core.mail import send_mail
 User = get_user_model()
 
 
@@ -21,7 +20,7 @@ class Posts(models.Model):
 
 
 class Comments(LifecycleModel):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
     text = models.TextField()
     published_date = models.DateTimeField()
     is_publish = models.BooleanField(default=False)
@@ -34,3 +33,4 @@ class Comments(LifecycleModel):
 
     def __str__(self):
         return self.text
+
