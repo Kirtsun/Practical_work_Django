@@ -16,6 +16,7 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentsForm, Mail, PostsForm
 from .models import Posts
+from .tasks import send_mail
 
 User = get_user_model()
 
@@ -30,8 +31,7 @@ def post_new(request):
             post.create_date = timezone.now()
             post.published_date = timezone.now()
             post.save()
-            send_mail('You have a new Post', form.cleaned_data['text'], 'company@gmail.com',
-                      ['admin@gmail.com'], fail_silently=False)
+            send_mail.delay(subject='You have a new Post', text=form.cleaned_data['text'], to_email='admin@gmail.com')
             messages.add_message(request, messages.SUCCESS, 'Post create')
             return redirect('post_detail', pk=post.id)
     else:
@@ -61,8 +61,8 @@ def create_comments(request, pk):
             comm.published_date = timezone.now()
             comm.post_id = pk
             comm.save()
-            send_mail('You have a new Comments', form.cleaned_data['text'], 'company@gmail.com',
-                      ['admin@gmail.com'], fail_silently=False)
+            send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
+                            to_email='admin@gmail.com')
             messages.add_message(request, messages.SUCCESS, 'Comment create')
             return redirect('post_detail', pk=pk)
     else:
