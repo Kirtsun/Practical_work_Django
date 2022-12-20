@@ -135,3 +135,4 @@ def contact_form(request):
     context = {'form': form}
     data['html_form'] = render_to_string('dz_practical/contact_form.html', context, request=request)
     return JsonResponse(data)
+
