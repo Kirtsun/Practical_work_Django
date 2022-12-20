@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 
 from .models import Comments, Posts
 
-
 User = get_user_model()
 
 
