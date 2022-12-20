@@ -16,7 +16,6 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentsForm, Mail, PostsForm
 from .models import Posts
-from .tasks import send_mail
 
 User = get_user_model()
 
