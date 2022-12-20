@@ -163,8 +163,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS = ['community.pythonanywhere.com']
-
 # calery
 
 CELERY_TIMEZONE = TIME_ZONE
