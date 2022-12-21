@@ -16,6 +16,7 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentsForm, Mail, PostsForm
 from .models import Posts
+from .tasks import send_mail
 
 User = get_user_model()
 
@@ -122,10 +123,11 @@ def contact_form(request):
         form = Mail(request.POST)
         if form.is_valid():
             data['form_is_valid'] = True
-            to_mail = form.cleaned_data['mail']
+            client_email = form.cleaned_data['mail']
             text = form.cleaned_data['text']
+            text = text + f'\nClient email: {client_email}'
             subject = 'Someone need your help'
-            send_mail.delay(subject, text, to_mail)
+            send_mail.delay(subject, text, to_email='admin@gmail.com')
 
         else:
             data['form_is_valid'] = False

@@ -31,8 +31,9 @@ class Comments(LifecycleModel):
 
     @hook(AFTER_UPDATE, when="is_publish", was=False, is_now=True)
     def on_publish(self):
-        send_mail.delay(subject='You have a new Comment', text=' http://127.0.0.1:8000' +
-                                    reverse('post_detail', args=[str(self.post.id)]), to_email=self.post.author.email)
+        send_mail.delay(subject='You have a new Comment', text=' http://127.0.0.1:8000'
+                                                               + reverse('post_detail', args=[str(self.post.id)]),
+                        to_email=self.post.author.email)
 
     def __str__(self):
         return self.text
