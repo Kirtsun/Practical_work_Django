@@ -16,10 +16,10 @@ class PostsAdmin(admin.ModelAdmin):
 
 @admin.register(Comments)
 class CommentsAdmin(admin.ModelAdmin):
-    list_display = ("text", 'published_date', 'is_publish', 'post')
+    list_display = ("text", 'published_date', 'is_publish', 'post', 'name')
     fieldsets = [
         (None, {'fields': ['text', 'is_publish', 'post', 'published_date', 'name']})]
-    list_filter = ['published_date']
+    list_filter = ['post']
     date_hierarchy = 'published_date'
     search_fields = ['text']
     save_as = True
