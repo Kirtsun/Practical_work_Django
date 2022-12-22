@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import JsonResponse
@@ -9,13 +10,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.decorators import method_decorator
 from django.views import generic
-from django.views.decorators.cache import cache_page
 
 from .forms import CommentsForm, Mail, PostsForm
 from .models import Posts
-from .tasks import send_mail
 
 User = get_user_model()
 
@@ -30,7 +28,8 @@ def post_new(request):
             post.create_date = timezone.now()
             post.published_date = timezone.now()
             post.save()
-            send_mail.delay(subject='You have a new Post', text=form.cleaned_data['text'], to_email='admin@gmail.com')
+            text = form.cleaned_data['text']
+            send_mail('You have a new comment', text, 'company@gmail.com', ['admin@gmail.com'])
             messages.add_message(request, messages.SUCCESS, 'Post create')
             return redirect('post_detail', pk=post.id)
     else:
@@ -60,8 +59,8 @@ def create_comments(request, pk):
             comm.published_date = timezone.now()
             comm.post_id = pk
             comm.save()
-            send_mail.delay(subject='You have a new Comment', text=form.cleaned_data['text'],
-                            to_email='admin@gmail.com')
+
+            send_mail('You have a new Post', form.cleaned_data['text'], 'company@gmail.com', ['admin@gmail.com'])
             messages.add_message(request, messages.SUCCESS, 'Comment create')
             return redirect('post_detail', pk=pk)
     else:
@@ -69,7 +68,6 @@ def create_comments(request, pk):
     return render(request, 'dz_practical/create_comments.html', {'form': form, 'pk': pk})
 
 
-@method_decorator(cache_page(10), name='dispatch')
 class PostList(generic.ListView):
     model = Posts
     paginate_by = 5
@@ -92,7 +90,6 @@ def author_post(request, pk):
     return render(request, 'dz_practical/author_post.html', {'page_obj': page_obj, 'author': author})
 
 
-@cache_page(10)
 def detail_post(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     comm = post.comments_set.filter(is_publish=True)
@@ -126,7 +123,7 @@ def contact_form(request):
             text = form.cleaned_data['text']
             text = text + f'\nClient email: {client_email}'
             subject = 'Someone need your help'
-            send_mail.delay(subject, text, to_email='admin@gmail.com')
+            send_mail(subject, text, 'company@gmail.com', ['admin@gmail.com'])
 
         else:
             data['form_is_valid'] = False
