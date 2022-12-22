@@ -36,7 +36,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)a2wftx&wy_nhz2&b7i^f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['kyrtsun.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'kyrtsun.pythonanywhere.com']
 
 INTERNAL_IPS = [
     "127.0.0.1",
